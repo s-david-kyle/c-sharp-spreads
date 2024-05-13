@@ -1,7 +1,14 @@
-﻿// See https://aka.ms/new-console-template for more information
-using System.Threading.Tasks.Dataflow;
+﻿int[] array = { 1, 2, 3, 4, 5 };
 
-Console.WriteLine("Hello, World!");
+ReadOnlySpan<int> span = [42, 43, 44];
+
+
+
+Console.WriteLine(Sum(array));
+Console.WriteLine(Sum(new Span<int>(array)));
+
+
+
 static int Sum(Span<int> array)
 {
     int sum = 0;
@@ -11,9 +18,6 @@ static int Sum(Span<int> array)
     }
     return sum;
 }
-int[] array = { 1, 2, 3, 4, 5 };
 
-Console.WriteLine(Sum(array));
-Console.WriteLine(Sum(new Span<int>(array)));
 
 
