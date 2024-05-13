@@ -1,7 +1,7 @@
 ﻿int[] array = { 1, 2, 3, 4, 5 };
 
 ReadOnlySpan<int> span = [42, 43, 44];
-
+string s = "Hello, World!";
 
 
 Console.WriteLine(Sum(array));
