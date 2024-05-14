@@ -1,23 +1,17 @@
-﻿int[] array = { 1, 2, 3, 4, 5 };
+﻿using System.IO.Pipes;
 
-ReadOnlySpan<int> span = [42, 43, 44];
-string s = "Hello, World!";
+int i = 0;
 
-
-Console.WriteLine(Sum(array));
-Console.WriteLine(Sum(new Span<int>(array)));
-
-
-
-static int Sum(Span<int> array)
+// Add the /unsafe flag to enable unsafe code
+// /unsafe
+unsafe
 {
-    int sum = 0;
-    foreach (int i in array)
-    {
-        sum += i;
-    }
-    return sum;
+    int* ptr = &i;
+    ref int iref = ref *ptr;
 }
 
 
+static void Use(ref int reference, int lentgth)
+{
 
+}
