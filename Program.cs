@@ -1,51 +1,57 @@
-﻿
-
-Solution solution = new Solution();
-int[] nums1 = new int[] { 1, 2, 3, 0, 0, 0 };
-int[] nums2 = new int[] { 2, 5, 6 };
-solution.Merge(nums1, 3, nums2, 3);
-
-// int[] nums1 = new int[] { 1 };
-// int[] nums2 = new int[] { };
-// solution.Merge(nums1, 1, nums2, 0);
-
-// int[] nums1 = new int[] { 0 };
-// int[] nums2 = new int[] { 1 };
-// solution.Merge(nums1, 0, nums2, 1);
-
+﻿using System;
 
 public class Solution
 {
-    public void Merge(int[] nums1, int m, int[] nums2, int n)
+    public void Merge<T>(T[] nums1, int m, T[] nums2, int n) where T : IComparable<T>
     {
-        int arraySize = m + n;
-        int num1pos = 0;
-        int num2pos = 0;
+        int i = m - 1;
+        int j = n - 1;
+        int k = m + n - 1;
 
-        if (nums2.Length != 0)
+        while (i >= 0 && j >= 0)
         {
-
-            int[] tempArray = new int[arraySize];
-            for (int i = 0; i < arraySize; i++)
+            if (nums1[i].CompareTo(nums2[j]) >= 0)
             {
-                if ((nums1[num1pos] <= nums2[num2pos]) && num1pos < m)
-                {
-                    tempArray[i] = nums1[num1pos];
-                    num1pos++;
-                }
-                else
-                {
-                    tempArray[i] = nums2[num2pos];
-                    num2pos++;
-                }
+                nums1[k] = nums1[i];
+                i--;
             }
-            for (int i = 0; i < arraySize; i++)
+            else
             {
-                nums1[i] = tempArray[i];
+                nums1[k] = nums2[j];
+                j--;
             }
+            k--;
         }
-        Console.WriteLine(nums1.ToString());
-        Array.ForEach(nums1, Console.WriteLine);
+
+        while (j >= 0)
+        {
+            nums1[k] = nums2[j];
+            j--;
+            k--;
+        }
+
+        Console.WriteLine(string.Join(", ", nums1));
     }
 }
 
+class Program
+{
+    static void Main(string[] args)
+    {
+        Solution solution = new Solution();
+
+        int[] nums1 = new int[] { 1, 2, 3, 0, 0, 0 };
+        int[] nums2 = new int[] { 2, 5, 6 };
+        solution.Merge(nums1, 3, nums2, 3);
+
+        // Example with empty nums2 array
+        int[] nums3 = new int[] { 1 };
+        int[] nums4 = new int[] { };
+        solution.Merge(nums3, 1, nums4, 0);
+
+        // Example with empty nums1 array
+        int[] nums5 = new int[] { 0 };
+        int[] nums6 = new int[] { 1 };
+        solution.Merge(nums5, 0, nums6, 1);
+    }
+}
