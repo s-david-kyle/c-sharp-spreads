@@ -1,116 +1,51 @@
-﻿using System.Runtime.CompilerServices;
+﻿
 
-int i = 42;
-var span = new MySpan<int>(ref i);
-span[0] = 43;
-Console.WriteLine(i); // 1
+Solution solution = new Solution();
+int[] nums1 = new int[] { 1, 2, 3, 0, 0, 0 };
+int[] nums2 = new int[] { 2, 5, 6 };
+solution.Merge(nums1, 3, nums2, 3);
 
-var anotherSpan = new MySpan<char>("Hello".ToCharArray());
-Console.WriteLine(anotherSpan[0]); // H
-while (anotherSpan.Length > 0)
+// int[] nums1 = new int[] { 1 };
+// int[] nums2 = new int[] { };
+// solution.Merge(nums1, 1, nums2, 0);
+
+// int[] nums1 = new int[] { 0 };
+// int[] nums2 = new int[] { 1 };
+// solution.Merge(nums1, 0, nums2, 1);
+
+
+public class Solution
 {
-    Console.WriteLine(anotherSpan[0]);
-    anotherSpan = anotherSpan.Slice(1);
-}
-
-readonly ref struct MySpan<T>
-{
-    private readonly ref T _reference;
-    private readonly int _length;
-
-    public int Length => _length;
-
-    public MySpan(T[] array)
+    public void Merge(int[] nums1, int m, int[] nums2, int n)
     {
-        _reference = ref array[0];
-        _length = array.Length;
-    }
+        int arraySize = m + n;
+        int num1pos = 0;
+        int num2pos = 0;
 
-    public MySpan(ref T reference)
-    {
-        _reference = ref reference;
-        _length = 1;
-    }
-
-    public MySpan(ref T reference, int length)
-    {
-        _reference = ref reference;
-        _length = length;
-    }
-
-    public ref T this[int index]
-    {
-        get
+        if (nums2.Length != 0)
         {
-            if (index >= _length)
+
+            int[] tempArray = new int[arraySize];
+            for (int i = 0; i < arraySize; i++)
             {
-                throw new IndexOutOfRangeException();
+                if ((nums1[num1pos] <= nums2[num2pos]) && num1pos < m)
+                {
+                    tempArray[i] = nums1[num1pos];
+                    num1pos++;
+                }
+                else
+                {
+                    tempArray[i] = nums2[num2pos];
+                    num2pos++;
+                }
             }
-
-            return ref Unsafe.Add(ref _reference, index);
-        }
-
-    }
-
-    public MySpan<T> Slice(int offset)
-    {
-        if (offset > _length)
-        {
-            throw new IndexOutOfRangeException();
-        }
-
-        return new MySpan<T>(ref Unsafe.Add(ref _reference, offset), _length - offset);
-    }
-
-
-}
-
-readonly ref struct MyReadOnlySpan<T>
-{
-    private readonly ref T _reference;
-    private readonly int _length;
-
-    public int Length => _length;
-
-    public MyReadOnlySpan(T[] array)
-    {
-        _reference = ref array[0];
-        _length = array.Length;
-    }
-
-    public MyReadOnlySpan(ref T reference)
-    {
-        _reference = ref reference;
-        _length = 1;
-    }
-
-    public MyReadOnlySpan(ref T reference, int length)
-    {
-        _reference = ref reference;
-        _length = length;
-    }
-
-    public ref readonly T this[int index]
-    {
-        get
-        {
-            if (index >= _length)
+            for (int i = 0; i < arraySize; i++)
             {
-                throw new IndexOutOfRangeException();
+                nums1[i] = tempArray[i];
             }
-
-            return ref Unsafe.Add(ref _reference, index);
         }
-
-    }
-
-    public MyReadOnlySpan<T> Slice(int offset)
-    {
-        if (offset > _length)
-        {
-            throw new IndexOutOfRangeException();
-        }
-
-        return new MyReadOnlySpan<T>(ref Unsafe.Add(ref _reference, offset), _length - offset);
+        Console.WriteLine(nums1.ToString());
+        Array.ForEach(nums1, Console.WriteLine);
     }
 }
+
